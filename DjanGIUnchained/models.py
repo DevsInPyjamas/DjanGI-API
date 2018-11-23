@@ -33,6 +33,9 @@ class Role(models.Model):
     description = models.CharField(max_length=255)
     admin = models.BooleanField(null=False)
 
+    def __str__(self):
+        return '{} {} {}'.format(self.name, self.description, self.admin)
+
 
 class Permission(models.Model):
     """
@@ -46,6 +49,9 @@ class Permission(models.Model):
     access = models.BooleanField(null=False)
     modification = models.BooleanField(null=False)
 
+    def __str__(self):
+        return '{} {} {} {}'.format(self.roleName, self.screen, self.access, self.modification)
+
 
 class User(models.Model):
     """
@@ -54,3 +60,6 @@ class User(models.Model):
     name = models.CharField(max_length=50, primary_key=True)
     password = models.CharField(max_length=50, blank=False)
     roleName = models.ForeignKey(Role, on_delete=models.CASCADE, related_name='links', null=False)
+
+    def __str__(self):
+        return '{} {} {}'.format(self.name, self.password, self.roleName)
