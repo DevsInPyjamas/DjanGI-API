@@ -1,3 +1,56 @@
 from django.db import models
 
 
+class PieceType(models.Model):
+    """
+        Model that represents the MIGHTY POWER OF THE types of the pieces
+    """
+    type_id = models.CharField(max_length=4, primary_key=True)
+    name = models.CharField(max_length=80, blank=False)
+
+    def __str__(self):
+        return '{} {}'.format(self.type_id, self.name)
+
+
+class Pieces(models.Model):
+    """
+        Model that represents the MIGHTY POWER OF THE pieces
+    """
+    id = models.IntegerField(primary_key=True)
+    name = models.CharField(max_length=255, blank=False)
+    manufacturer = models.CharField(max_length=255, blank=False)
+    type_id = models.ForeignKey(PieceType, on_delete=models.CASCADE, related_name='pieces', null=False)
+
+    def __str__(self):
+        return '{} {} {} {}'.format(self.id, self.name, self.manufacturer, self.type_id)
+
+
+class Role(models.Model):
+    """
+        Model that represents the MIGHTY POWER OF THE roles
+    """
+    name = models.CharField(max_length=50, primary_key=True)
+    description = models.CharField(max_length=255)
+    admin = models.BooleanField(null=False)
+
+
+class Permission(models.Model):
+    """
+            Model that represents the MIGHTY POWER OF THE permissions
+    """
+    class Meta:
+        unique_together = (('roleName', 'screen'),)
+    roleName = models.ForeignKey(Role, max_length=50, primary_key=True, on_delete=models.CASCADE,
+                                 related_name='permissions')
+    screen = models.CharField(max_length=50, blank=False)
+    access = models.BooleanField(null=False)
+    modification = models.BooleanField(null=False)
+
+
+class User(models.Model):
+    """
+            Model that represents the MIGHTY POWER OF THE users
+    """
+    name = models.CharField(max_length=50, primary_key=True)
+    password = models.CharField(max_length=50, blank=False)
+    roleName = models.ForeignKey(Role, on_delete=models.CASCADE, related_name='links', null=False)
