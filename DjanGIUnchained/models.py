@@ -1,4 +1,5 @@
 from django.db import models
+# JuanSalmeronM si que ha currado, ha arrancado la cachimba
 
 
 class PieceType(models.Model):
