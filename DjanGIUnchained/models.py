@@ -17,7 +17,6 @@ class Pieces(models.Model):
     """
         Model that represents the MIGHTY POWER OF THE pieces
     """
-    id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=255, blank=False)
     manufacturer = models.CharField(max_length=255, blank=False)
     type_id = models.ForeignKey(PieceType, on_delete=models.CASCADE, related_name='pieces', null=False)
