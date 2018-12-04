@@ -42,13 +42,15 @@ class Permission(models.Model):
     """
             Model that represents the MIGHTY POWER OF THE permissions
     """
-    class Meta:
-        unique_together = ('roleName', 'screen')
-    roleName = models.ForeignKey(Role, max_length=50, primary_key=True, on_delete=models.CASCADE,
-                                 related_name='permissions')
+    roleName = models.ForeignKey(Role, max_length=50, on_delete=models.CASCADE, related_name='permissions')
     screen = models.CharField(max_length=50, blank=False)
     access = models.BooleanField(null=False)
     modification = models.BooleanField(null=False)
+
+    def save(self, *args, **kwargs):
+        if self.id is None and Permission.objects.filter(roleName=self.roleName, screen=self.screen).count() == 1:
+            raise Exception('Unique constraint violated...')
+        super(Permission, self).save(*args, **kwargs)
 
     def __str__(self):
         return '{} {} {} {}'.format(self.roleName, self.screen, self.access, self.modification)
