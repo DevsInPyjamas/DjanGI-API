@@ -24,7 +24,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Pieces',
             fields=[
-                ('id', models.IntegerField(primary_key=True, serialize=False)),
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=255)),
                 ('manufacturer', models.CharField(max_length=255)),
             ],
