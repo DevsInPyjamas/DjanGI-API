@@ -22,7 +22,7 @@ class Pieces(models.Model):
     type_id = models.ForeignKey(PieceType, on_delete=models.CASCADE, related_name='pieces', null=False)
 
     def __str__(self):
-        return '{} {} {} {}'.format(self.id, self.name, self.manufacturer, self.type_id)
+        return '{} {}'.format(self.id, self.name)
 
 
 class Role(models.Model):
@@ -34,7 +34,7 @@ class Role(models.Model):
     admin = models.BooleanField(null=False)
 
     def __str__(self):
-        return '{} {} {}'.format(self.name, self.description, self.admin)
+        return '{} {}'.format(self.name, self.admin)
 
 
 class Permission(models.Model):
@@ -50,7 +50,7 @@ class Permission(models.Model):
     modification = models.BooleanField(null=False)
 
     def __str__(self):
-        return '{} {} {} {}'.format(self.roleName, self.screen, self.access, self.modification)
+        return '{} {}'.format(self.roleName, self.screen)
 
 
 class User(models.Model):
