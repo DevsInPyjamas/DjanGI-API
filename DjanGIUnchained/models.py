@@ -43,7 +43,7 @@ class Permission(models.Model):
             Model that represents the MIGHTY POWER OF THE permissions
     """
     class Meta:
-        unique_together = (('roleName', 'screen'),)
+        unique_together = ('roleName', 'screen')
     roleName = models.ForeignKey(Role, max_length=50, primary_key=True, on_delete=models.CASCADE,
                                  related_name='permissions')
     screen = models.CharField(max_length=50, blank=False)
