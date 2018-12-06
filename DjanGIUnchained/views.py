@@ -112,3 +112,24 @@ def login(request):
             return HttpResponseBadRequest(json.dumps({'error': 'WRONG COMBINATION'}))
     else:
         return HttpResponseBadRequest(json.dumps({'error': 'Bad Request LOL'}))
+
+
+@csrf_exempt
+@cross_origin
+@returns_json
+@with_session
+def delete_piece(request, user: models.User):
+    """
+
+    :param request: the request
+    :param user: the logged user
+    :return: si se ha borrado o no
+    """
+    if request.method == 'DELETE' and 'id' in request.GET:
+        if not user.is_admin:
+            return HttpResponseBadRequest(json.dumps({'error': 'You have not permission'}))
+        piece_id = request.GET['id']
+        models.Pieces.objects.filter(id=piece_id).delete()
+        return json.dumps({'ok': 'process done'})
+    else:
+        return HttpResponseBadRequest(json.dumps({"error": "No id in delete request"}))
