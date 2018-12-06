@@ -38,3 +38,19 @@ Modifica un elemento de la base de datos y devuelve el JSON con el objeto modifi
 
 En todas se usa el header X-session-user para controlar que algunos 
 de los usuarios de la DB no puedan hacer acciones de super user.
+
+### Decoradores
+La API además contiene 4 decoradores. 
+```
+@csrf_exempt
+@with_session
+@cross_origin
+@returns_json
+```
+
+El decorador `@csrf_exempt` desactiva el csrf (no sé qué coño es lmao pero así funciona la API).
+`@with_session` obtiene de la base de datos un usuario para que en todas las views se pueda
+controlar el tema de permisos a la hora de recibir peticiones. 
+`@cross_origin` permite que la API sea utilizada fuera de django.
+`@returns_json` creo que viene explícito, pero lo explico igualmente. Convierte 
+la respuesta de una view a un json.
