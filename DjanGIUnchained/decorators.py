@@ -1,6 +1,7 @@
 import json
 
 from django.http import HttpResponse
+from DjanGIUnchained import models
 
 
 def cross_origin(func):
@@ -24,3 +25,16 @@ def returns_json(func):
         return response
 
     return returns_json_decorator
+
+
+def with_session(func):
+    def with_session_decorator(request):
+        if 'HTTP_X_SESSION_USER' in request.META:
+            header_request = request.META['HTTP_X_SESSION_USER']
+            logged_user = models.User.objects.get(name=header_request)
+            response = func(request, logged_user)
+        else:
+            response = {'error': 'No user provided as session user'}
+        return response
+
+    return with_session_decorator

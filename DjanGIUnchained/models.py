@@ -25,7 +25,7 @@ class Pieces(models.Model):
     type_id = models.ForeignKey(PieceType, on_delete=models.CASCADE, related_name='pieces', null=False)
 
     def to_dict(self):
-        return {'id': self.id, 'name': self.name, 'manufacturer': self.manufacturer, 'type_id': self.type_id}
+        return {'id': self.id, 'name': self.name, 'manufacturer': self.manufacturer, 'type_id': self.type_id.to_dict()}
 
     def __str__(self):
         return '{} {}'.format(self.id, self.name)
@@ -59,7 +59,7 @@ class Permission(models.Model):
     modification = models.BooleanField(null=False)
 
     def to_dict(self):
-        return {'id': self.id, 'screen': self.screen, 'roleName': self.roleName, 'access': self.access,
+        return {'id': self.id, 'screen': self.screen, 'roleName': self.roleName.id, 'access': self.access,
                 'modification': self.modification}
 
     def __str__(self):
@@ -77,5 +77,13 @@ class User(models.Model):
     def to_dict(self):
         return {'name': self.name, 'password': self.password, 'roleName': self.roleName}
 
+    @property
+    def is_guest(self):
+        return self.roleName.name == 'invitado'
+
+    @property
+    def is_admin(self):
+        return self.roleName.name == 'administrador'
+
     def __str__(self):
-        return '{} {} {}'.format(self.name, self.password, self.roleName)
+        return '{} {} {}'.format(self.name, self.password, self.roleName.to_dict())
