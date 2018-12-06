@@ -120,7 +120,7 @@ def login(request):
 @with_session
 def delete_piece(request, user: models.User):
     """
-
+        Deletes a piece from the DB
     :param request: the request
     :param user: the logged user
     :return: si se ha borrado o no
@@ -133,3 +133,31 @@ def delete_piece(request, user: models.User):
         return json.dumps({'ok': 'process done'})
     else:
         return HttpResponseBadRequest(json.dumps({"error": "No id in delete request"}))
+
+
+@csrf_exempt
+@cross_origin
+@returns_json
+@with_session
+def modify_piece(request, user: models.User):
+    """
+        Modifies a pieces from DB
+    :param request: the request
+    :param user: the logged user
+    :return: return the modofied object
+    """
+    if request.method == 'POST':
+        if not user.is_admin:
+            return HttpResponseBadRequest(json.dumps({'error', 'Not allowed to do that'}))
+        piece_dict = json.loads(request.body)
+        piece_to_modify = models.Pieces.objects.get(id=piece_dict['id'])
+        manufacturer = piece_dict['manufacturer']
+        if piece_to_modify.manufacturer != manufacturer and len(manufacturer) != 0:
+            piece_to_modify.manufacturer = manufacturer
+        name = piece_dict['name']
+        if piece_to_modify.name != name and len(name) != 0:
+            piece_to_modify.name = name
+        piece_to_modify.save()
+        return piece_to_modify.to_dict()
+    else:
+        return HttpResponseBadRequest(json.dumps({'error': 'Bad Request LOL'}))

@@ -9,6 +9,7 @@ urlpatterns = [
     url(r'^piece$', views.piece_data, name='All Type Pieces'),
     url(r'^new_piece$', views.new_piece, name='New piece'),
     url(r'^login$', views.login, name='Login'),
-    url(r'^delete_piece$', views.delete_piece, name='Delete piece')
+    url(r'^delete_piece$', views.delete_piece, name='Delete piece'),
+    url(r'^modify_piece$', views.modify_piece, name='Modify piece')
 
 ]
