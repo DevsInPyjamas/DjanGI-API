@@ -104,9 +104,9 @@ def new_piece(request, user: models.User):
 def login(request):
     if request.method == 'POST':
         request_dict = json.loads(request.body)
-        user_role_name = models.User.objects.get(name=request_dict['roleName'])
-        user = models.User.objects.get(name=request_dict['name'])
-        if user.password == request_dict['password']:
+        user = models.User.objects.filter(name=request_dict['name'], password=request_dict['password'])
+        if len(user) == 1:
+            user_role_name = models.User.objects.get(name=request_dict['name']).roleName
             return {'token': request_dict['name'], 'role': user_role_name.to_dict()}
         else:
             return HttpResponseBadRequest(json.dumps({'error': 'WRONG COMBINATION'}))

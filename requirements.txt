@@ -1,5 +1,3 @@
 django
-psycopg2
-django 2.1.3
 pytz
 setuptools
