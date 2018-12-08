@@ -11,6 +11,7 @@ def cross_origin(func):
             response['Access-Control-Allow-Origin'] = '*'
             if request.method == 'OPTIONS':
                 response['Access-Control-Allow-Headers'] = 'x-session-user'
+                response['Access-Control-Allow-Methods'] = 'GET, POST, DELETE'
         return response
 
     return cross_origin_decorator
