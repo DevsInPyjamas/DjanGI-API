@@ -87,11 +87,13 @@ def new_piece(request, user: models.User):
     """
     if request.method == 'POST':
         if not user.is_admin:
-            return HttpResponseBadRequest(json.dumps({'error', 'Not allowed to do that'}))
+            return HttpResponseBadRequest(json.dumps({'error': 'Not allowed to do that'}))
         piece_dict = json.loads(request.body)
-        piece_type = models.PieceType.objects.get(type_id=piece_dict['type_id'])
+        piece_type = models.PieceType.objects.filter(type_id=piece_dict['type_id'])
+        if len(piece_type) == 0:
+            return json.dumps({'error': 'That piece type does not exist'})
         new_piece_from_request = models.Pieces(name=piece_dict['name'], manufacturer=piece_dict['manufacturer'],
-                                               type_id=piece_type)
+                                               type_id=piece_type[0])
         new_piece_from_request.save()
         return new_piece_from_request.to_dict()
     else:
