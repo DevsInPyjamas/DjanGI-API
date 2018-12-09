@@ -152,14 +152,16 @@ def modify_piece(request, user: models.User):
         if not user.is_admin:
             return HttpResponseBadRequest(json.dumps({'error', 'Not allowed to do that'}))
         piece_dict = json.loads(request.body)
-        piece_to_modify = models.Pieces.objects.get(id=piece_dict['id'])
+        piece_to_modify = models.Pieces.objects.filter(id=piece_dict['id'])
+        if len(piece_to_modify) == 0:
+            return HttpResponseBadRequest(json.dumps({'error': 'No piece found'}))
         manufacturer = piece_dict['manufacturer']
-        if piece_to_modify.manufacturer != manufacturer and len(manufacturer) != 0:
-            piece_to_modify.manufacturer = manufacturer
+        if piece_to_modify[0].manufacturer != manufacturer and len(manufacturer) != 0:
+            piece_to_modify[0].manufacturer = manufacturer
         name = piece_dict['name']
-        if piece_to_modify.name != name and len(name) != 0:
-            piece_to_modify.name = name
-        piece_to_modify.save()
-        return piece_to_modify.to_dict()
+        if piece_to_modify[0].name != name and len(name) != 0:
+            piece_to_modify[0].name = name
+        piece_to_modify[0].save()
+        return piece_to_modify[0].to_dict()
     else:
         return HttpResponseBadRequest(json.dumps({'error': 'Bad Request LOL'}))
