@@ -17,8 +17,6 @@ def all_piece_types(request, user: models.User):
     :param request: literally the request
     :return: all objects serialized as a JSON with a HTTP response
     """
-    if user.is_guest:
-        return []
     query_repsonse = models.PieceType.objects.all()
     dicted_response = [i.to_dict() for i in query_repsonse]
     return dicted_response
